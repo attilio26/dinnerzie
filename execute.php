@@ -1,0 +1,99 @@
+<?php
+//10-01-2018
+//started on 20-09-2017
+// La app di Heroku si puo richiamare da browser con
+//			https://dinnerzie.herokuapp.com/
+
+
+/*API key = 464446081:AAHkEPL2_Yb7vbpqxyDInH2OE1eMI_lJuV0
+
+da browser request ->   https://dinnerzie.herokuapp.com/register.php
+           answer  <-   {"ok":true,"result":true,"description":"Webhook is already set"}
+In questo modo invocheremo lo script register.php che ha lo scopo di comunicare a Telegram
+l’indirizzo dell’applicazione web che risponderà alle richieste del bot.
+
+da browser request ->   https://api.telegram.org/bot464446081:AAHkEPL2_Yb7vbpqxyDInH2OE1eMI_lJuV0/getMe
+           answer  <-   {"ok":true,"result":{"id":464446081,"is_bot":true,"first_name":"dinnerzie","username":"dinnerziebot"}}
+
+riferimenti:
+https://gist.github.com/salvatorecordiano/2fd5f4ece35e75ab29b49316e6b6a273
+https://www.salvatorecordiano.it/creare-un-bot-telegram-guida-passo-passo/
+*/
+$content = file_get_contents("php://input");
+$update = json_decode($content, true);
+
+if(!$update)
+{
+  exit;
+}
+
+$message = isset($update['message']) ? $update['message'] : "";
+$messageId = isset($message['message_id']) ? $message['message_id'] : "";
+$chatId = isset($message['chat']['id']) ? $message['chat']['id'] : "";
+$firstname = isset($message['chat']['first_name']) ? $message['chat']['first_name'] : "";
+$lastname = isset($message['chat']['last_name']) ? $message['chat']['last_name'] : "";
+$username = isset($message['chat']['username']) ? $message['chat']['username'] : "";
+$date = isset($message['date']) ? $message['date'] : "";
+$text = isset($message['text']) ? $message['text'] : "";
+
+// pulisco il messaggio ricevuto togliendo eventuali spazi prima e dopo il testo
+$text = trim($text);
+// converto tutti i caratteri alfanumerici del messaggio in minuscolo
+$text = strtolower($text);
+
+header("Content-Type: application/json");
+
+//ATTENZIONE!... Tutti i testi e i COMANDI contengono SOLO lettere minuscole
+$response = '';
+$helptext = "List of commands : 
+/on_on    -> LuceEXT ON  onvif ON 
+/lon_toff -> LuceEXT ON  onvif OFF  
+/loff_ton -> LuceEXT OFF onvif ON
+/off_off  -> LuceEXT OFF onvif OFF
+/pranzo  -> Lettura stazione2 ... su bus RS485
+";
+
+if(strpos($text, "/start") === 0 || $text=="ciao" || $text == "help"){
+	$response = "Ciao $firstname, benvenuto   \n". $helptext; 
+}
+
+//<-- Comandi ai rele
+elseif($text=="/on_on"){
+	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/3");
+}
+elseif($text=="/lon_toff"){
+	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/2");
+}
+elseif($text=="/loff_ton"){
+	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/1");
+}
+elseif($text=="/off_off"){
+	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/0");
+}
+//<-- Lettura parametri slave5
+elseif($text=="/pranzo"){
+	$response = file_get_contents("http://dario95.ddns.net:8083/pranzo");
+}
+
+//<-- Manda a video la risposta completa
+elseif($text=="/verbose"){
+	$response = "chatId ".$chatId. "   messId ".$messageId. "  user ".$username. "   lastname ".$lastname. "   firstname ".$firstname. "\n". $helptext ;	
+	$response = $response. "\n\n Heroku + dropbox gmail.com";
+}
+
+
+else
+{
+	$response = "Unknown command!";			//<---Capita quando i comandi contengono lettere maiuscole
+}
+
+// la mia risposta è un array JSON composto da chat_id, text, method
+// chat_id mi consente di rispondere allo specifico utente che ha scritto al bot
+// text è il testo della risposta
+$parameters = array('chat_id' => $chatId, "text" => $response);
+$parameters["method"] = "sendMessage";
+// imposto la keyboard
+$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff"],["/loff_ton", "/off_off"],["/pranzo","/verbose","help"]], "one_time_keyboard": false}';
+// converto e stampo l'array JSON sulla response
+echo json_encode($parameters);
+?>

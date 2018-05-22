@@ -1,3 +1,3 @@
-# dinnerzie
-RS485 bus ID2
-Seconda stazione su bus 485, pilota telecamera ONVIF, Lampada esterno cancello principale. Sensore DHT11; sensore DS18B20
+# Telegram Echo Bot
+
+This is a sample Telegram Bot written in PHP running on Heroku
