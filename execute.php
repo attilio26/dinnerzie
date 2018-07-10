@@ -1,5 +1,5 @@
 <?php
-//10-01-2018
+//10-07-2018
 //started on 20-09-2017
 // La app di Heroku si puo richiamare da browser con
 //			https://dinnerzie.herokuapp.com/
@@ -18,6 +18,7 @@ da browser request ->   https://api.telegram.org/bot464446081:AAHkEPL2_Yb7vbpqxy
 riferimenti:
 https://gist.github.com/salvatorecordiano/2fd5f4ece35e75ab29b49316e6b6a273
 https://www.salvatorecordiano.it/creare-un-bot-telegram-guida-passo-passo/
+https://stackoverflow.com/questions/47150639/how-to-make-direct-link-to-website-in-telegram-bot-php-button
 */
 $content = file_get_contents("php://input");
 $update = json_decode($content, true);
@@ -50,7 +51,8 @@ $helptext = "List of commands :
 /lon_toff -> LuceEXT ON  onvif OFF  
 /loff_ton -> LuceEXT OFF onvif ON
 /off_off  -> LuceEXT OFF onvif OFF
-/pranzo  -> Lettura stazione2 ... su bus RS485
+/web      -> iFrame camera
+/pranzo   -> Lettura stazione2 ... su bus RS485
 ";
 
 if(strpos($text, "/start") === 0 || $text=="ciao" || $text == "help"){
@@ -74,6 +76,11 @@ elseif($text=="/off_off"){
 elseif($text=="/pranzo"){
 	$response = file_get_contents("http://dario95.ddns.net:8083/pranzo");
 }
+//iframe da telecamera ONVIF
+elseif($text=="/web"){
+	$response = 'http://dario95.ddns.net:8069';
+	apiRequest("sendMessage", array('chat_id' => $chatId, 'parse_mode' => 'html', "text" => $response));
+}
 
 //<-- Manda a video la risposta completa
 elseif($text=="/verbose"){
@@ -93,7 +100,7 @@ else
 $parameters = array('chat_id' => $chatId, "text" => $response);
 $parameters["method"] = "sendMessage";
 // imposto la keyboard
-$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff"],["/loff_ton", "/off_off"],["/pranzo","/verbose","help"]], "one_time_keyboard": false}';
+$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff"],["/loff_ton", "/off_off"],["/pranzo","/verbose","/web","help"]], "one_time_keyboard": false}';
 // converto e stampo l'array JSON sulla response
 echo json_encode($parameters);
 ?>
