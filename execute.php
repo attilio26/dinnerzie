@@ -1,5 +1,5 @@
 <?php
-//10-07-2018
+//11-07-2018
 //started on 20-09-2017
 // La app di Heroku si puo richiamare da browser con
 //			https://dinnerzie.herokuapp.com/
@@ -74,11 +74,7 @@ elseif($text=="/off_off"){
 elseif($text=="/pranzo"){
 	$response = file_get_contents("http://dario95.ddns.net:8083/pranzo");
 }
-//iframe da telecamera ONVIF
-elseif($text=="/web"){
-	$response = 'http://dario95.ddns.net:8069';
-	apiRequest("sendMessage", array('chat_id' => $chatId, 'parse_mode' => 'html', "text" => $response));
-}
+
 
 //<-- Manda a video la risposta completa
 elseif($text=="/verbose"){
@@ -98,7 +94,7 @@ else
 $parameters = array('chat_id' => $chatId, "text" => $response);
 $parameters["method"] = "sendMessage";
 // imposto la keyboard
-$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff"],["/loff_ton", "/off_off"],["/pranzo","/verbose","help"]], "one_time_keyboard": false}';
+$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff"],["/loff_ton", "/off_off"],["/pranzo","/verbose","help"]], "resize_keyboard": true, "one_time_keyboard": false}';
 // converto e stampo l'array JSON sulla response
 echo json_encode($parameters);
 ?>
