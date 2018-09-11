@@ -64,7 +64,7 @@ elseif($text=="/on_on"){
 elseif($text=="/lon_toff"){
 	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/2");
 }
-elseif($text=="/loff_ton \ud83c\udfa5"){
+elseif($text=="/loff_ton\ud83c\udfa5"){
 	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/1");
 }
 elseif($text=="/off_off"){
