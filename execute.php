@@ -64,7 +64,7 @@ elseif($text=="/on_on"){
 elseif($text=="/lon_toff"){
 	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/2");
 }
-elseif($text=="\ud83c\udfa5 /loff_ton"){
+elseif($text=="/loff_ton \ud83c\udfa5"){
 	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/1");
 }
 elseif($text=="/off_off"){
@@ -94,7 +94,7 @@ $parameters = array('chat_id' => $chatId, "text" => $response);
 $parameters["method"] = "sendMessage";
 // imposto la keyboard
 // Gli EMOTICON sono a:     http://www.charbase.com/block/miscellaneous-symbols-and-pictographs
-$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff"],["\ud83c\udfa5 /loff_ton", "/off_off"],["/pranzo","/verbose","help"]], "one_time_keyboard": false}';
+$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff"],["/loff_ton \ud83c\udfa5", "/off_off"],["/pranzo","/verbose","help"]], "one_time_keyboard": false}';
 // converto e stampo l'array JSON sulla response
 echo json_encode($parameters);
 ?>
