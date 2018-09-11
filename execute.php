@@ -1,5 +1,5 @@
 <?php
-//11-07-2018
+//11-09-2018
 //started on 20-09-2017
 // La app di Heroku si puo richiamare da browser con
 //			https://dinnerzie.herokuapp.com/
@@ -50,7 +50,7 @@ $helptext = "List of commands :
 /lon_toff -> LuceEXT ON  onvif OFF  
 /loff_ton -> LuceEXT OFF onvif ON
 /off_off  -> LuceEXT OFF onvif OFF
-/pranzo   -> Lettura stazione2 ... su bus RS485
+/pranzo  -> Lettura stazione2 ... su bus RS485
 ";
 
 if(strpos($text, "/start") === 0 || $text=="ciao" || $text == "help"){
@@ -75,7 +75,6 @@ elseif($text=="/pranzo"){
 	$response = file_get_contents("http://dario95.ddns.net:8083/pranzo");
 }
 
-
 //<-- Manda a video la risposta completa
 elseif($text=="/verbose"){
 	$response = "chatId ".$chatId. "   messId ".$messageId. "  user ".$username. "   lastname ".$lastname. "   firstname ".$firstname. "\n". $helptext ;	
@@ -94,7 +93,8 @@ else
 $parameters = array('chat_id' => $chatId, "text" => $response);
 $parameters["method"] = "sendMessage";
 // imposto la keyboard
-$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff"],["/loff_ton", "/off_off"],["/pranzo","/verbose","help"]], "resize_keyboard": true, "one_time_keyboard": false}';
+// Gli EMOTICON sono a:     http://www.charbase.com/block/miscellaneous-symbols-and-pictographs
+$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff"],["\ud83c\udfa5 /loff_ton", "/off_off"],["/pranzo","/verbose","help"]], "one_time_keyboard": false}';
 // converto e stampo l'array JSON sulla response
 echo json_encode($parameters);
 ?>
