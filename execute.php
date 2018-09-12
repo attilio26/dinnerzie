@@ -1,5 +1,5 @@
 <?php
-//11-09-2018
+//12-09-2018
 //started on 20-09-2017
 // La app di Heroku si puo richiamare da browser con
 //			https://dinnerzie.herokuapp.com/
@@ -61,7 +61,7 @@ if(strpos($text, "/start") === 0 || $text=="ciao" || $text == "help"){
 elseif($text=="/on_on"){
 	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/3");
 }
-elseif($text=="/lon_toff"){
+elseif(strpos($text,"lon_toff")){
 	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/2");
 }
 elseif(strpos($text,"loff_ton")){
@@ -94,7 +94,7 @@ $parameters = array('chat_id' => $chatId, "text" => $response);
 $parameters["method"] = "sendMessage";
 // imposto la keyboard
 // Gli EMOTICON sono a:     http://www.charbase.com/block/miscellaneous-symbols-and-pictographs
-$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff"],["/loff_ton \ud83d\udcf9", "/off_off"],["/pranzo","/verbose","help"]], "one_time_keyboard": false}';
+$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff \ud83d\udd06"],["/loff_ton \ud83d\udcf9", "/off_off"],["/pranzo","/verbose","help"]], "one_time_keyboard": false}';
 // converto e stampo l'array JSON sulla response
 echo json_encode($parameters);
 ?>
