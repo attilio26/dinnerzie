@@ -94,7 +94,7 @@ $parameters = array('chat_id' => $chatId, "text" => $response);
 $parameters["method"] = "sendMessage";
 // imposto la keyboard
 // Gli EMOTICON sono a:     http://www.charbase.com/block/miscellaneous-symbols-and-pictographs
-$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff \ud83d\udd06"],["/loff_ton \ud83d\udcf9", "/off_off"],["/pranzo","/verbose","help"]], "one_time_keyboard": false}';
+$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff \ud83d\udd06"],["/loff_ton \ud83c\udfa6", "/off_off"],["/pranzo","/verbose","help"]], "one_time_keyboard": false}';
 // converto e stampo l'array JSON sulla response
 echo json_encode($parameters);
 ?>
