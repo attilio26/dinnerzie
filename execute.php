@@ -1,5 +1,5 @@
 <?php
-//12-09-2018
+//27-11-2018
 //started on 20-09-2017
 // La app di Heroku si puo richiamare da browser con
 //			https://dinnerzie.herokuapp.com/
@@ -67,7 +67,7 @@ elseif(strpos($text,"lon_toff")){
 elseif(strpos($text,"loff_ton")){
 	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/1");
 }
-elseif($text=="/off_off"){
+elseif(strpos($text,"/off_off")){
 	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/0");
 }
 //<-- Lettura parametri slave5
@@ -92,9 +92,10 @@ else
 // text è il testo della risposta
 $parameters = array('chat_id' => $chatId, "text" => $response);
 $parameters["method"] = "sendMessage";
-// imposto la keyboard
 // Gli EMOTICON sono a:     http://www.charbase.com/block/miscellaneous-symbols-and-pictographs
-$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff \ud83d\udd06"],["/loff_ton \ud83c\udfa6", "/off_off"],["/pranzo","/verbose","help"]], "one_time_keyboard": false,  "resize_keyboard": true}';
+//													https://unicode.org/emoji/charts/full-emoji-list.html
+//													https://apps.timwhitlock.info/emoji/tables/unicode
+$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff \ud83d\udd06"],["/loff_ton \ud83c\udfa6", "/off_off \ud83d\udd35"],["/pranzo","/verbose","help"]], "one_time_keyboard": false,  "resize_keyboard": true}';
 // converto e stampo l'array JSON sulla response
 echo json_encode($parameters);
 ?>
