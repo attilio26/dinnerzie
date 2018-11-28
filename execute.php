@@ -95,7 +95,7 @@ $parameters["method"] = "sendMessage";
 // Gli EMOTICON sono a:     http://www.charbase.com/block/miscellaneous-symbols-and-pictographs
 //													https://unicode.org/emoji/charts/full-emoji-list.html
 //													https://apps.timwhitlock.info/emoji/tables/unicode
-$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff \ud83d\udd06"],["/loff_ton \ud83c\udfa6", "/off_off \ud83d\udd35"],["/pranzo","/verbose","help"]], "one_time_keyboard": false,  "resize_keyboard": true}';
+$parameters["reply_markup"] = '{ "keyboard": [["/on_on", "/lon_toff \ud83d\udd06"],["/loff_ton \ud83c\udfa6", "/off_off \ud83d\udd35"],["/pranzo"]], "one_time_keyboard": false,  "resize_keyboard": true}';
 // converto e stampo l'array JSON sulla response
 echo json_encode($parameters);
 ?>
