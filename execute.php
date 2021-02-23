@@ -27,6 +27,25 @@ if(!$update)
   exit;
 }
 
+function clean_html_page($str_in){
+	$startch = strpos($str_in,"<br>") + 1 ;							//primo carattere utile da estrarre
+	$endch = strpos($str_in," </a></h2><foot");									//ultimo carattere utile da estrarre
+	$str_in = substr($str_in,$startch,$endch - $startch);				// substr(string,start,length)
+	//$str_in = str_replace("<a href='?a="," ",$str_in);
+	//$str_in = str_replace("r><h2>"," ",$str_in);
+	//$str_in = str_replace(" </a></h2><h2>"," ",$str_in);
+	//$str_in = str_replace("1'/>"," ",$str_in);
+	//$str_in = str_replace("2'/>"," ",$str_in);
+	//$str_in = str_replace("3'/>"," ",$str_in);
+	//$str_in = str_replace("4'/>"," ",$str_in);
+	//$str_in = str_replace("5'/>"," ",$str_in);
+	//$str_in = str_replace("6'/>"," ",$str_in);
+	//$str_in = str_replace("7'/>"," ",$str_in);	
+	//$str_in = str_replace("8'/>"," ",$str_in);
+	//$str_in = str_replace("9'/>"," ",$str_in);		
+	return $str_in;
+}
+
 $message = isset($update['message']) ? $update['message'] : "";
 $messageId = isset($message['message_id']) ? $message['message_id'] : "";
 $chatId = isset($message['chat']['id']) ? $message['chat']['id'] : "";
@@ -46,10 +65,10 @@ header("Content-Type: application/json");
 //ATTENZIONE!... Tutti i testi e i COMANDI contengono SOLO lettere minuscole
 $response = '';
 $helptext = "List of commands : 
-/on_on    -> LuceEXT ON  onvif ON 
-/lon_toff -> LuceEXT ON  onvif OFF  
-/loff_ton -> LuceEXT OFF onvif ON
-/off_off  -> LuceEXT OFF onvif OFF
+/muro_on	-> LuceEXT ON   
+/muro_off	-> LuceEXT OFF  
+/tlc_on 	-> telecamera ON
+/tlc_off  -> telecamera OFF
 /pranzo  -> Lettura stazione2 ... su bus RS485
 ";
 
@@ -58,21 +77,26 @@ if(strpos($text, "/start") === 0 || $text=="ciao" || $text == "help"){
 }
 
 //<-- Comandi ai rele
-elseif(strpos($text,"on_on")){
-	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/3");
+elseif(strpos($text,"muro_on")){
+	$resp = file_get_contents("http://dario95.ddns.net:8083/?a=m");
+	$response = clean_html_page($resp);
 }
-elseif(strpos($text,"lon_toff")){
-	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/2");
+elseif(strpos($text,"muro_off")){
+	$resp = file_get_contents("http://dario95.ddns.net:8083/?a=n");
+	$response = clean_html_page($resp);
 }
-elseif(strpos($text,"loff_ton")){
-	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/1");
+elseif(strpos($text,"tlc_on")){
+	$resp = file_get_contents("http://dario95.ddns.net:8083/?a=k");
+	$response = clean_html_page($resp);
 }
-elseif (strpos($text,"off_off")){
-	$response = file_get_contents("http://dario95.ddns.net:8083/rele/2/0");
+elseif (strpos($text,"tlc_off")){
+	$resp = file_get_contents("http://dario95.ddns.net:8083/?a=l");
+	$response = clean_html_page($resp);
 }
-//<-- Lettura parametri slave5
+//<-- Lettura parametri slave2
 elseif(strpos($text,"pranzo")){ 
-	$response = file_get_contents("http://dario95.ddns.net:8083/pranzo");
+	$resp = file_get_contents("http://dario95.ddns.net:8083");
+	$response = clean_html_page($resp);
 }
 
 //<-- Manda a video la risposta completa
@@ -95,7 +119,7 @@ $parameters["method"] = "sendMessage";
 // Gli EMOTICON sono a:     http://www.charbase.com/block/miscellaneous-symbols-and-pictographs
 //													https://unicode.org/emoji/charts/full-emoji-list.html
 //													https://apps.timwhitlock.info/emoji/tables/unicode
-$parameters["reply_markup"] = '{ "keyboard": [["/on_on \ud83d\udd34", "/lon_toff \ud83d\udd06"],["/loff_ton \ud83c\udfa6", "/off_off \ud83d\udd35"],["/pranzo \u2753"]], "one_time_keyboard": false,  "resize_keyboard": true}';
+$parameters["reply_markup"] = '{ "keyboard": [["/muro_on \ud83d\udd34", "/muro_off \ud83d\udd35"],["/tlc_on \ud83d\udd34", "/tlc_off \ud83d\udd35"],["/pranzo \u2753"]], "one_time_keyboard": false,  "resize_keyboard": true}';
 // converto e stampo l'array JSON sulla response
 echo json_encode($parameters);
 ?>
