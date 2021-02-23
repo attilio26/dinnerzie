@@ -28,7 +28,7 @@ if(!$update)
 }
 
 function clean_html_page($str_in){
-	$startch = strpos($str_in,"<a href='?a=0'/>") + 1 ;							//primo carattere utile da estrarre
+	$startch = strpos($str_in," <a href='?a=2'/> ") + 1 ;							//primo carattere utile da estrarre
 	$endch = strpos($str_in,"ter>powerd") -4;									//ultimo carattere utile da estrarre
 	$str_in = substr($str_in,$startch,$endch - $startch);				// substr(string,start,length)
 	//$str_in = str_replace("<a href='?a="," ",$str_in);
