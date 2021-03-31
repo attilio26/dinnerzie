@@ -31,7 +31,7 @@ function clean_html_page($str_in){
 //elimino i caratteri html dalla pagina del wemos casa zie
 	$startch = strpos($str_in,"Uptime:") + 43 ;							//primo carattere utile da estrarre
 	$endch = strpos($str_in,"Tds1");					//ultimo carattere utile da estrarre
-	$str_in = substr($str_in, $startch, ($endch - $startch) );				// substr(string,start,length)
+	$str_in = substr($str_in, $startch, ($endch - $startch));				// substr(string,start,length)
 	$str_in = str_replace("<a href='?a="," ",$str_in);
 	$str_in = str_replace("<br>"," ",$str_in);
 	$str_in = str_replace(" </a></h2><h2>"," ",$str_in);
@@ -59,7 +59,8 @@ function clean_html_page($str_in){
 	$str_in = str_replace("q'/>"," ",$str_in);
 //elimino i caratteri della pagina che non interessano la stazione bedzie
 	$startch = strpos($str_in,"slave2");
-	//$str_in = substr($str_in,$startch);
+	$endch = strpos($str_in,"slave1");	
+	$str_in = substr($str_in,$startch,($endch - $startch));
 	return $str_in;
 }
 
