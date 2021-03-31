@@ -52,6 +52,7 @@ function clean_html_page($str_in){
 	$str_in = str_replace("h'/>"," ",$str_in);	
 	$str_in = str_replace("i'/>"," ",$str_in);	
 	$str_in = str_replace("l'/>"," ",$str_in);	
+	$str_in = str_replace("k'/>"," ",$str_in);		
 	$str_in = str_replace("m'/>"," ",$str_in);	
 	$str_in = str_replace("n'/>"," ",$str_in);
 	$str_in = str_replace("o'/>"," ",$str_in);	
