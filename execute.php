@@ -61,6 +61,7 @@ function clean_html_page($str_in){
 	$startch = strpos($str_in,"slave1");
 	$str_in = substr($str_in,$startch);
 	return $str_in;
+}
 
 	
 $message = isset($update['message']) ? $update['message'] : "";
