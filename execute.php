@@ -58,6 +58,7 @@ function clean_html_page($str_in){
 	$str_in = str_replace("o'/>"," ",$str_in);	
 	$str_in = str_replace("p'/>"," ",$str_in);
 	$str_in = str_replace("q'/>"," ",$str_in);
+	$str_in = str_replace("<h2>"," ",$str_in);	
 //elimino i caratteri della pagina che non interessano la stazione bedzie
 	$startch = strpos($str_in,"slave2");
 	$endch = strpos($str_in,"slave1");	
